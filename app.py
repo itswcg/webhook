@@ -1,11 +1,17 @@
 from flask import Flask
+from flask import request
+import os
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/webhook', methods=['GET', 'POST'])
 def hello_world():
-    return 'Hello World!'
+    if request.method == 'POST':
+        data = request.json
+        project = data['repository']['name']
+        dir = os.path.abspath(project)
+        return '%s' % dir
 
 
 if __name__ == '__main__':
