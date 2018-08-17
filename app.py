@@ -13,10 +13,14 @@ def hello_world():
         project = data['repository']['name']
         dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), project)
 
-        res = subprocess.call('git pull origin master', shell=True, cwd=dir)
+        print('%s' % dir)
+
+        res = subprocess.call('git add .', shell=True, cwd=dir)
+
+        print(res)
 
         if res != 0:
-            subprocess.call('git pull origin develop', shell=True, cwd=dir)
+            subprocess.call('git add .', shell=True, cwd=dir)
 
     return 'Hello, World'
 
