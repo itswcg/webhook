@@ -18,7 +18,7 @@ def hello_world():
         if res != 0:
             subprocess.call('git pull origin develop', shell=True, cwd=dir)
 
-        return 'Hello, World'
+    return 'Hello, World'
 
 
 if __name__ == '__main__':
