@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import request
 import os
-import subprocess
 
 app = Flask(__name__)
 
@@ -15,15 +14,12 @@ def hello_world():
 
         print('%s' % dir)
 
-        res = subprocess.call('git add .', shell=True, cwd=dir)
+        os.chdir(dir)
+        os.system('git pull origin develop')
+        os.system('git pull origin master')
 
-        print(res)
-
-        if res != 0:
-            subprocess.call('git add .', shell=True, cwd=dir)
-
-    return 'Hello, World'
+        return 'Hello, World'
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
