@@ -12,8 +12,6 @@ def hello_world():
         project = data['repository']['name']
         dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), project)
 
-        print('%s' % dir)
-
         os.chdir(dir)
         os.system('git pull origin develop')
         os.system('git pull origin master')
