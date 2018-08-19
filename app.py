@@ -16,7 +16,7 @@ def hello_world():
         os.system('git pull origin develop')
         os.system('git pull origin master')
 
-        return '%s' % (dir)
+        return '%s %s' % (dir, os.getcwd())
 
 
 if __name__ == '__main__':
