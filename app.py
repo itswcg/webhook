@@ -1,12 +1,19 @@
 from flask import Flask
 from flask import request
-import os, subprocess, asyncio
+import os, subprocess
+from celery import Celery
 
 app = Flask(__name__)
-loop = asyncio.get_event_loop()
+
+app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
 
 
-async def git_pull(cwd):
+@celery.task
+def git_pull(cwd):
     subprocess.call('git pull origin develop', shell=True, cwd=cwd)
     subprocess.call('git pull origin master', shell=True, cwd=cwd)
 
@@ -17,7 +24,8 @@ def hello_world():
         data = request.get_json(force=True)
         project = data['repository']['name']
         dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), project)
-        loop.run_until_complete(git_pull(dir))
+        git_pull.delay(dir)
+
         return 'Success'
 
     return 'Hello, World'
