@@ -16,6 +16,7 @@ celery.conf.update(app.config)
 def git_pull(cwd):
     subprocess.call('git pull origin develop', shell=True, cwd=cwd)
     subprocess.call('git pull origin master', shell=True, cwd=cwd)
+    subprocess.call('supervisorctl restart hysteria', shell=True)
 
 
 @app.route('/webhook/git', methods=['GET', 'POST'])
